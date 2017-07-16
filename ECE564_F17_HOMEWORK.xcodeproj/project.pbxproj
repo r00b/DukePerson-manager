@@ -12,7 +12,7 @@
 		870821D61F1B9FD7002A3310 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 870821D41F1B9FD7002A3310 /* Main.storyboard */; };
 		870821D81F1B9FD7002A3310 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 870821D71F1B9FD7002A3310 /* Assets.xcassets */; };
 		870821DB1F1B9FD7002A3310 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 870821D91F1B9FD7002A3310 /* LaunchScreen.storyboard */; };
-		870821E31F1BA025002A3310 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870821E21F1BA025002A3310 /* DataModel.swift */; };
+		870822261F1C3004002A3310 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870822251F1C3004002A3310 /* DataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,8 +23,8 @@
 		870821D71F1B9FD7002A3310 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		870821DA1F1B9FD7002A3310 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		870821DC1F1B9FD7002A3310 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		870821E21F1BA025002A3310 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModel.swift; path = ../DataModel.swift; sourceTree = "<group>"; };
 		870821E61F1BA1B1002A3310 /* HW1.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = HW1.playground; sourceTree = "<group>"; };
+		870822251F1C3004002A3310 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +60,7 @@
 			children = (
 				870821D01F1B9FD7002A3310 /* AppDelegate.swift */,
 				870821D21F1B9FD7002A3310 /* ViewController.swift */,
-				870821E21F1BA025002A3310 /* DataModel.swift */,
+				870822251F1C3004002A3310 /* DataModel.swift */,
 				870821D41F1B9FD7002A3310 /* Main.storyboard */,
 				870821D71F1B9FD7002A3310 /* Assets.xcassets */,
 				870821D91F1B9FD7002A3310 /* LaunchScreen.storyboard */,
@@ -144,7 +144,7 @@
 			files = (
 				870821D31F1B9FD7002A3310 /* ViewController.swift in Sources */,
 				870821D11F1B9FD7002A3310 /* AppDelegate.swift in Sources */,
-				870821E31F1BA025002A3310 /* DataModel.swift in Sources */,
+				870822261F1C3004002A3310 /* DataModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +310,7 @@
 				870821E11F1B9FD7002A3310 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
