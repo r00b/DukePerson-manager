@@ -10,12 +10,12 @@ import UIKit
  I also suggest you try to follow good OO practices by containing any properties and methods that deal with `DukePerson` within the class definition.
  */
 /*:
- In addition to the properties required by `Person`, `CustomStringConvertible` and `BlueDevil`, you need to have include the following information about each person:
+ In addition to the properties required by `Person`, `CustomStringConvertible` and `BlueDevil`, you need to include the following information about each person:
  * Their degree, if applicable
- * Up to 3 of their best programming languages as an array of `String` (like `hobbies` that is in the protocol)
+ * Up to 3 of their best programming languages as an array of `String`s (like `hobbies` that is in `BlueDevil`)
  */
 /*:
- I suggest you create an array of `DukePerson` objects, and you must have at least 3 entries in your array for me to test:
+ I suggest you create an array of `DukePerson` objects, and you **must** have at least 3 entries in your array for me to test:
  1. Yourself
  2. Me (my info is in the slide deck)
  3. One of the TAs (also in slide deck)
@@ -30,7 +30,7 @@ import UIKit
 /*:
  Below is an example of what the string output from `whoIs' should look like:
  
- Ric Telford is from Morrisville, NC and is a Professor. He is proficient in Swift, C and C++. When not in class, Ric enjoys Biking, Hiking and Golf.
+     Ric Telford is from Morrisville, NC and is a Professor. He is proficient in Swift, C and C++. When not in class, Ric enjoys Biking, Hiking and Golf.
  */
 
 enum Gender {
@@ -58,7 +58,6 @@ protocol BlueDevil {
 //: ### START OF HOMEWORK 
 //: Do not change anything above.
 //: Put your code here
-
 
 //: ### END OF HOMEWORK
 //: Uncomment the line below to test your homework.
