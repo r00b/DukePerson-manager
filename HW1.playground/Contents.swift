@@ -2,7 +2,7 @@ import UIKit
 
 /*:
  ### ECE 564 HW1 assignment
- In this first assignment, you are going to create a base data model for the Students, TAs and Professors in this class, and then be able to search an array of those objects by writing a `whoIs` function.
+ In this first assignment, you are going to create a base data model for storing information about the students, TAs and professors in ECE 564. You need to populate your data model with at least 3 records, but can add more.  You will also provide a search function ("whoIs") to search an array of those objects by first name and last name.
  I suggest you create a new class called `DukePerson` and have it subclass `Person`.  You also need to abide by 2 protocols:
  1. BlueDevil
  2. CustomStringConvertible
@@ -26,6 +26,9 @@ import UIKit
  - You must include 4 different types, such as string, character, int, double, bool, float
  - You must include 4 different control flows, such as for/in, while, repeat/while, if/else, switch/case
  - You must include 4 different operators from any of the various categories of assignment, arithmatic, comparison, nil coalescing, range, logical
+ */
+/*: 
+ Base grade is a 45 but more points can be earned by adding additional functions besides whoIs (like additional search), extensive error checking, concise code, excellent OO practices, and/or excellent, unique algorithms
  */
 /*:
  Below is an example of what the string output from `whoIs' should look like:
@@ -57,7 +60,7 @@ protocol BlueDevil {
 }
 //: ### START OF HOMEWORK 
 //: Do not change anything above.
-//: Put your code here
+//: Put your code here:
 
 //: ### END OF HOMEWORK
 //: Uncomment the line below to test your homework.
