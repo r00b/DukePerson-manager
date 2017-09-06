@@ -213,7 +213,7 @@ gilbert.gender = .Male
 gilbert.role = .TA
 gilbert.school = "Duke University"
 gilbert.degree = "Computer Science and African-American Studies"
-ric.addLanguages(languages: ["Swift", "Java"])
+gilbert.addLanguages(languages: ["Swift", "Java"])
 
 dukePeople.append(gilbert)
 
@@ -225,9 +225,9 @@ niral.gender = .Male
 niral.role = .TA
 niral.school = "Rutgers University"
 niral.degree = "ECE and Computer Science"
-ric.addLanguages(languages: ["Swift", "Python", "Java"])
+niral.addLanguages(languages: ["Swift", "Python", "Java"])
 //niral.addLanguage(language: "C")  // uncomment to see error checking for >3 languages
-ric.addHobbies(hobbies: ["computer vision", "tennis", "travelling"])
+niral.addHobbies(hobbies: ["computer vision", "tennis", "travelling"])
 
 dukePeople.append(niral)
 
@@ -279,6 +279,7 @@ func findHighestGPA() -> String {
 print("========================== whoIs test ==========================")
 
 print(whoIs("Robert Steilberg"))
+print(whoIs("Ric Telford"))
 print(whoIs("Donald Trump"))
 
 print("================================================================")
@@ -286,6 +287,7 @@ print("================================================================")
 print("====================== findByDegree test =======================")
 
 print(findByDegree("Computer Science"))
+print(findByDegree("Underwater Basketweaving"))
 
 print("================================================================")
 
