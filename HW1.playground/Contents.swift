@@ -65,13 +65,61 @@ protocol BlueDevil {
 
 class DukePerson: Person, BlueDevil, CustomStringConvertible {
     
+    func setFirstName(firstName: String) {
+        self.firstName = firstName
+    }
+    
+    func getFirstName() -> String {
+        return self.firstName
+    }
+    
+    func setLastName(lastName: String) {
+        self.lastName = lastName
+    }
+    
+    func getLastName() -> String {
+        return self.lastName
+    }
+    
+    func setWhereFrom(whereFrom: String) {
+        self.whereFrom = whereFrom
+    }
+    
+    func setGender(gender: Gender) {
+        self.gender = gender
+    }
+    
     var role: DukeRole = .Student
+    
+    func setRole(role: DukeRole) {
+        self.role = role
+    }
     
     var school: String = ""
     
+    func setSchool(school: String) {
+        self.school = school
+    }
+    
     var degree: String = ""
     
+    func setDegree(degree: String) {
+        self.degree = degree
+    }
+    
+    func getDegree() -> String {
+        return self.degree
+    }
+    
     var gpa: Double = -1.0
+    
+    func setGPA(gpa: Double) {
+        self.gpa = gpa
+    }
+    
+    func getGPA() -> Double {
+        return self.gpa
+    }
     
     func getSchoolDegree() -> String {
         var res: String = ""
@@ -88,7 +136,7 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
     }
     
     func englishizeArray(array: [String]) -> String {
-        var result = ""
+        var result: String = ""
         switch array.count {
         case 0:
             return ""
@@ -114,7 +162,7 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
     }
     
     func addLanguages(languages: [String]) {
-        var newLanguages = languages
+        var newLanguages: [String] = languages
         while !newLanguages.isEmpty {
             if (self.languages.count < 3) {
                 self.languages.insert(newLanguages[0])
@@ -126,7 +174,7 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
     }
     
     func getLanguages() -> String {
-        let languageList = englishizeArray(array: Array(self.languages))
+        let languageList: String = englishizeArray(array: Array(self.languages))
         if (languageList != "") {
             return "\(self.firstName) is proficient in " + languageList
         } else {
@@ -138,21 +186,21 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
         self.languages = Set(self.languages.filter() { $0 != languages })
     }
     
-    var hobbies = [String]() // cannot be set because would violate protocol
+    var hobbies = [String]() // cannot be a Set because would violate protocol
     
     func addHobby(hobby: String) {
         self.hobbies.append(hobby)
     }
     
     func addHobbies(hobbies: [String]) {
-        var newHobbies = hobbies
+        var newHobbies: [String] = hobbies
         for num in 0...newHobbies.count - 1 {
             self.hobbies.append(newHobbies[num])
         }
     }
     
     func getHobbies() -> String {
-        let hobbyList = englishizeArray(array: self.hobbies)
+        let hobbyList: String = englishizeArray(array: self.hobbies)
         if (englishizeArray(array: self.hobbies) != "") {
             return "When not in class, \(self.firstName) enjoys" + hobbyList
         } else {
@@ -167,21 +215,24 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
     var description: String {
         return "\(self.firstName) \(self.lastName) is from \(self.whereFrom) and is a \(self.role). \(getSchoolDegree()) \(getLanguages()) \(getHobbies())"
     }
+    
+    func getDescription() -> String {
+        return self.description
+    }
 }
-
 
 
 var dukePeople = [DukePerson]()
 
 let robert = DukePerson()
-robert.firstName = "Robert"
-robert.lastName = "Steilberg"
-robert.whereFrom = "Richmond, VA"
-robert.gender = .Male
-robert.role = .Student
-robert.school = "Duke University"
-robert.degree = "Computer Science"
-robert.gpa = 3.8
+robert.setFirstName(firstName: "Robert")
+robert.setLastName(lastName: "Steilberg")
+robert.setWhereFrom(whereFrom: "Richmond, VA")
+robert.setGender(gender: .Male)
+robert.setRole(role: .Student)
+robert.setSchool(school: "Duke University")
+robert.setDegree(degree: "Computer Science")
+robert.setGPA(gpa: 3.8)
 robert.addLanguage(language: "Python")
 robert.addLanguage(language: "JavaScript")
 robert.addLanguage(language: "Ruby")
@@ -192,39 +243,40 @@ robert.addHobby(hobby: "SCUBA diving")
 dukePeople.append(robert)
 
 let ric = DukePerson()
-ric.firstName = "Ric"
-ric.lastName = "Telford"
-ric.whereFrom = "Morrisville, NC"
-ric.gender = .Male
-ric.role = .Professor
-ric.school = "Trinity University"
-ric.degree = "Computer Science"
-ric.gpa = 3.9 // for testing find highest GPA
+ric.setFirstName(firstName: "Ric")
+ric.setLastName(lastName: "Telford")
+ric.setWhereFrom(whereFrom: "Morrisville, NC")
+ric.setGender(gender: .Male)
+ric.setRole(role: .Professor)
+ric.setSchool(school: "Trinity University")
+ric.setDegree(degree: "Computer Science")
+ric.setGPA(gpa: 3.9) // for testing findHighestGPA()
 ric.addLanguages(languages: ["Swift", "C", "C++"])
 ric.addHobbies(hobbies: ["golf", "swimming", "biking"])
 
 dukePeople.append(ric)
 
 let gilbert = DukePerson()
-gilbert.firstName = "Gilbert"
-gilbert.lastName = "Brooks"
-gilbert.whereFrom = "Shelby, NC"
-gilbert.gender = .Male
-gilbert.role = .TA
-gilbert.school = "Duke University"
-gilbert.degree = "Computer Science and African-American Studies"
+gilbert.setFirstName(firstName: "Gilbert")
+gilbert.setLastName(lastName: "Brooks")
+gilbert.setWhereFrom(whereFrom: "Shelby, NC")
+gilbert.setGender(gender: .Male)
+gilbert.setRole(role: .TA)
+gilbert.setSchool(school: "Duke University")
+gilbert.setDegree(degree: "Computer Science and African-American Studies")
 gilbert.addLanguages(languages: ["Swift", "Java"])
+gilbert.addHobbies(hobbies: ["user experience", "product development"])
 
 dukePeople.append(gilbert)
 
 let niral = DukePerson()
-niral.firstName = "Niral"
-niral.lastName = "Shah"
-niral.whereFrom = "central New Jersey"
-niral.gender = .Male
-niral.role = .TA
-niral.school = "Rutgers University"
-niral.degree = "ECE and Computer Science"
+niral.setFirstName(firstName: "Niral")
+niral.setLastName(lastName: "Shah")
+niral.setWhereFrom(whereFrom: "central New Jersey")
+niral.setGender(gender: .Male)
+niral.setRole(role: .TA)
+niral.setSchool(school: "Rutgers University")
+niral.setDegree(degree: "ECE and Computer Science")
 niral.addLanguages(languages: ["Swift", "Python", "Java"])
 //niral.addLanguage(language: "C")  // uncomment to see error checking for >3 languages
 niral.addHobbies(hobbies: ["computer vision", "tennis", "travelling"])
@@ -232,13 +284,13 @@ niral.addHobbies(hobbies: ["computer vision", "tennis", "travelling"])
 dukePeople.append(niral)
 
 func whoIs(_ name: String) -> String {
-    let nameArr = name.characters.split{$0 == " "}.map(String.init)
-    var res : String = ""
+    let nameArr: [String] = name.characters.split{$0 == " "}.map(String.init)
+    var res: String = ""
     var found: Bool = false
     for person in dukePeople {
-        if (person.firstName == nameArr[0] && person.lastName == nameArr[1]) {
+        if (person.getFirstName() == nameArr[0] && person.getLastName() == nameArr[1]) {
             found = true
-            res += person.description + "\n"
+            res += person.getDescription() + "\n"
         }
     }
     if found {
@@ -252,9 +304,9 @@ func findByDegree(_ degree: String) -> String {
     var res: String = ""
     var found: Bool = false;
     for person in dukePeople {
-        if (person.degree == degree) {
+        if (person.getDegree() == degree) {
             found = true
-            res += person.description + "\n"
+            res += person.getDescription() + "\n"
         }
     }
     if found {
@@ -268,9 +320,9 @@ func findHighestGPA() -> String {
     var res: String = ""
     var highestGPA: Double = 0.0
     for person in dukePeople {
-        if (person.gpa > highestGPA) {
-            highestGPA = person.gpa
-            res = person.description
+        if (person.getGPA() > highestGPA) {
+            highestGPA = person.getGPA()
+            res = person.getDescription()
         }
     }
     return res
