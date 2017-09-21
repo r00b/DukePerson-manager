@@ -49,6 +49,7 @@ In addition to the project requirements, I also added the following improvements
 * added a field for adding Team
 * UIPickerViews for configuring properties that are enums (i.e. gender, role)
 * Separate text boxes for languages and hobbies to prevent user error when adding languages or hobbies
+* ability to delete DukePerson entries via the TableView
 
 Known bugs:
 
