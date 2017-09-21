@@ -17,17 +17,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         // Create a new window; UIWindow is where all view controllers and views appear
-        self.window = UIWindow(frame: UIScreen.main.bounds)
+//        self.window = UIWindow(frame: UIScreen.main.bounds)
         
         // Create instance of ViewController
-        let mainViewController = ViewController()
+//        let mainViewController = ViewController()
         
         // Set initial view controller to our instance of ViewController
-        window!.rootViewController = mainViewController
-        self.window!.backgroundColor = UIColor.white
+//        window!.rootViewController = mainViewController
+//        self.window!.backgroundColor = UIColor.white
 
         // Present the window
-        self.window!.makeKeyAndVisible()
+//        self.window!.makeKeyAndVisible()
         
         return true
     }

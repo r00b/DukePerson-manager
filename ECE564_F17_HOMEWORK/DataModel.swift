@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 enum Gender: String {
     case Male = "Male"
@@ -17,10 +18,6 @@ enum DukeRole : String {
     case Student = "Student"
     case Professor = "Professor"
     case TA = "Teaching Assistant"
-    
-    var description: String {
-        return self.rawValue
-    }
 }
 
 enum Degree : String {
@@ -44,114 +41,107 @@ protocol BlueDevil {
     var role : DukeRole { get }
 }
 
-class DukePersonAttribute {
-    
-    var label: String?
-    
-    var placeholder: String?
-    
-    var labelView = UILabel()
-    
-    var fieldView = UITextField()
-    
-    init(label: String, placeholder: String, textFieldDelegate: UITextFieldDelegate) {
-        self.label = label
-        self.placeholder = placeholder
-        
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            return false
-        }
-        
-        self.labelView.text = self.label
-        self.labelView.translatesAutoresizingMaskIntoConstraints = false
-        
-        self.fieldView.delegate = textFieldDelegate
-        self.fieldView.placeholder = self.placeholder
-        self.fieldView.font = UIFont.systemFont(ofSize: 14)
-        self.fieldView.borderStyle = UITextBorderStyle.roundedRect
-        self.fieldView.layer.cornerRadius = 3.0
-        self.fieldView.layer.borderColor = UIColor( red: 118/255, green: 162/255, blue:246/255, alpha: 2.0 ).cgColor
-        self.fieldView.layer.borderWidth = 1
-        self.fieldView.autocorrectionType = UITextAutocorrectionType.no
-        if self.label == "GPA:" {
-            self.fieldView.keyboardType = UIKeyboardType.decimalPad
-        } else {
-            self.fieldView.keyboardType = UIKeyboardType.default
-        }
-        self.fieldView.returnKeyType = UIReturnKeyType.done
-        self.fieldView.clearButtonMode = UITextFieldViewMode.whileEditing
-        self.fieldView.contentVerticalAlignment = UIControlContentVerticalAlignment.center
-        self.fieldView.translatesAutoresizingMaskIntoConstraints = false
-    }
-}
-
 class DukePerson: Person, BlueDevil, CustomStringConvertible {
     
-    func setFirstName(firstName: String) {
-        self.firstName = firstName
-    }
     
-    func getFirstName() -> String {
-        return self.firstName
-    }
-    
-    func setLastName(lastName: String) {
-        self.lastName = lastName
-    }
-    
-    func getLastName() -> String {
-        return self.lastName
-    }
-    
-    func setWhereFrom(whereFrom: String) {
-        self.whereFrom = whereFrom
-    }
-    
-    func setGender(gender: Gender) {
-        self.gender = gender
-    }
+    // MARK: instance variables
     
     var role: DukeRole = .Student
     
-    func setRole(role: DukeRole) {
-        self.role = role
-    }
+    var team: String = "N/A"
     
     var school: String = ""
     
-    func setSchool(school: String) {
-        self.school = school
-    }
-    
     var degree: Degree = .NA
-    
-    func setDegree(degree: Degree) {
-        self.degree = degree
-    }
-    
-    func getDegree() -> Degree {
-        return self.degree
-    }
     
     var gpa: Double = -1.0
     
-    func setGPA(gpa: Double) {
-        self.gpa = gpa
+    var languages = [String]()
+    
+    var hobbies = [String]()
+    
+    var description: String {
+        return "\(self.firstName) \(self.lastName) is a \(self.gender) from \(self.whereFrom) and is a \(self.role). \(getTeamDescription()) \(getSchoolDescription()) \(getDegreeDescription()) \(getLanguagesDescription()) \(getHobbiesDescription())"
     }
     
-    func getGPA() -> Double {
-        return self.gpa
-    }
+    // MARK: public functions
     
-    func getSchoolDegree() -> String {
-        if gpa != -1.0 {
-            return "\(self.firstName) graduated with a \(self.degree) from \(self.school) and a GPA of \(self.gpa). "
+    func addLanguage(language: String) {
+        if (self.languages.count < 3 && language != "") {
+            self.languages.append(language)
         } else {
-            return "\(self.firstName) graduated with a \(self.degree) from \(self.school)."
+            os_log("Cannot add more than 3 languages", log: OSLog.default, type: .debug)
         }
     }
     
-    func englishizeArray(array: [String]) -> String {
+    func addLanguages(languages: [String]) {
+        var newLanguages: [String] = languages
+        while !newLanguages.isEmpty {
+            if (self.languages.count < 3 && newLanguages[0] != "") {
+                self.languages.append(newLanguages[0])
+            } else {
+                os_log("Cannot add more than 3 languages", log: OSLog.default, type: .debug)
+            }
+            newLanguages.remove(at: 0)
+        }
+    }
+    
+    func removeLanguage(languages: String) {
+        self.languages = self.languages.filter() { $0 != languages }
+    }
+    
+    func addHobby(hobby: String) {
+        if (self.hobbies.count < 3 && hobby != "") {
+            self.hobbies.append(hobby)
+        } else {
+            os_log("Cannot add more than 3 hobbies", log: OSLog.default, type: .debug)
+        }
+    }
+    
+    func addHobbies(hobbies: [String]) {
+        var newHobbies: [String] = hobbies
+        while !newHobbies.isEmpty {
+            if (self.hobbies.count < 3 && newHobbies[0] != "") {
+                self.hobbies.append(newHobbies[0])
+            } else {
+                os_log("Cannot add more than 3 hobbies", log: OSLog.default, type: .debug)
+            }
+            newHobbies.remove(at: 0)
+        }
+    }
+    
+    func removeHobby(hobby: String) {
+        self.hobbies = self.hobbies.filter() { $0 != hobby }
+    }
+    
+    
+    // MARK: private functions
+    
+    private func getTeamDescription() -> String {
+        if team != "" {
+            return "\(self.firstName) is on the \(self.team) team."
+        } else {
+            return ""
+        }
+    }
+    
+    private func getSchoolDescription() -> String {
+        if school != "" {
+            return "\(self.firstName) graduated from \(self.school)"
+        } else {
+            return ""
+        }
+    }
+    
+    private func getDegreeDescription() -> String {
+        if degree != .NA {
+            return "with a \(self.degree)."
+        } else {
+            return ". "
+        }
+    }
+    
+    private func englishizeArray(array: [String]) -> String {
         var result: String = ""
         switch array.count {
         case 0:
@@ -167,29 +157,7 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
         }
     }
     
-    var languages = Set<String>() // set so that no duplicate languages
-    
-    func addLanguage(language: String) {
-        if (self.languages.count < 3) {
-            self.languages.insert(language)
-        } else {
-            print("You cannot add more than 3 languages. Remove a language using removeLanguage().")
-        }
-    }
-    
-    func addLanguages(languages: [String]) {
-        var newLanguages: [String] = languages
-        while !newLanguages.isEmpty {
-            if (self.languages.count < 3) {
-                self.languages.insert(newLanguages[0])
-            } else {
-                print("You cannot add more than 3 languages. Remove a language using removeLanguage().")
-            }
-            newLanguages.remove(at: 0)
-        }
-    }
-    
-    func getLanguages() -> String {
+    private func getLanguagesDescription() -> String {
         let languageList: String = englishizeArray(array: Array(self.languages))
         if (languageList != "") {
             return "\(self.firstName) is proficient in" + languageList
@@ -198,29 +166,7 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
         }
     }
     
-    func removeLanguage(languages: String) {
-        self.languages = Set(self.languages.filter() { $0 != languages })
-    }
-    
-    var hobbies = [String]() // cannot be a Set because would violate protocol
-    
-    func addHobby(hobby: String) {
-        self.hobbies.append(hobby)
-    }
-    
-    func addHobbies(hobbies: [String]) {
-        var newHobbies: [String] = hobbies
-        while !newHobbies.isEmpty {
-            if (self.hobbies.count < 3) {
-                self.hobbies.append(newHobbies[0])
-            } else {
-                print("You cannot add more than 3 hobbies. Remove a language using removeLanguage().")
-            }
-            newHobbies.remove(at: 0)
-        }
-    }
-    
-    func getHobbies() -> String {
+    private func getHobbiesDescription() -> String {
         let hobbyList: String = englishizeArray(array: self.hobbies)
         if (englishizeArray(array: self.hobbies) != "") {
             return "When not in class, \(self.firstName) enjoys" + hobbyList
@@ -229,15 +175,138 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
         }
     }
     
-    func removeHobby(hobby: String) {
-        self.hobbies = self.hobbies.filter() { $0 != hobby }
+    
+    // MARK: getters
+    
+    func getFirstName() -> String {
+        return self.firstName
     }
     
-    var description: String {
-        return "\(self.firstName) \(self.lastName) is from \(self.whereFrom) and is a \(self.role). \(getSchoolDegree()) \(getLanguages()) \(getHobbies())"
+    func getLastName() -> String {
+        return self.lastName
+    }
+    
+    func getFullName() -> String {
+        return "\(self.firstName) \(self.lastName)"
+    }
+    
+    func getWhereFrom() -> String {
+        return self.whereFrom
+    }
+    
+    func getGender() -> String {
+        return self.gender.rawValue
+    }
+    
+    func getRole() -> String {
+        return self.role.rawValue
+    }
+    
+    func getTeam() -> String {
+        return self.team
+    }
+    
+    func getSchool() -> String {
+        return self.school
+    }
+    
+    func getDegree() -> String {
+        return self.degree.rawValue
+    }
+    
+    func getGPA() -> Double {
+        return self.gpa
     }
     
     func getDescription() -> String {
         return self.description
+    }
+    
+    func getLanguage(index: Int) -> String {
+        if languages.count >= index + 1 {
+            return languages[index]
+        } else {
+            return ""
+        }
+    }
+    
+    func getHobby(index: Int) -> String {
+        if hobbies.count >= index + 1 {
+            return hobbies[index]
+        } else {
+            return ""
+        }
+    }
+    
+    
+    // MARK: setters
+    
+    func setFirstName(firstName: String) {
+        self.firstName = firstName
+    }
+    
+    func setLastName(lastName: String) {
+        self.lastName = lastName
+    }
+    
+    func setWhereFrom(whereFrom: String) {
+        self.whereFrom = whereFrom
+    }
+    
+    func setGender(gender: String) {
+        switch gender {
+        case "Male":
+            self.gender = .Male
+        case "Female":
+            self.gender = .Female
+        default:
+            fatalError("Unexpected gender: \(gender)")
+        }
+    }
+    
+    func setRole(role: String) {
+        switch role {
+        case "Student":
+            self.role = .Student
+        case "Teaching Assistant":
+            self.role = .TA
+        case "TA":
+            self.role = .TA
+        case "Professor":
+            self.role = .Professor
+        default:
+            fatalError("Unexpected role: \(role)")
+        }
+    }
+    
+    func setTeam(team: String) {
+        self.team = team
+    }
+    
+    func setSchool(school: String) {
+        self.school = school
+    }
+    
+    func setDegree(degree: String) {
+        switch degree {
+        case "MS":
+            self.degree = .MS
+        case "BS":
+            self.degree = .BS
+        case "MENG":
+            self.degree = .MENG
+        case "Ph.D":
+            self.degree = .Phd
+        case "NA":
+            self.degree = .NA
+        case "Other":
+            self.degree = .Other
+        default:
+            self.degree = .NA
+        }
+    }
+    
+    func setGPA(gpa: Double) {
+        self.gpa = gpa
     }
 }

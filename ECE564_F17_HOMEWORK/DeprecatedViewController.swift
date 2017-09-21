@@ -6,6 +6,8 @@
 //  Copyright © 2017 ece564. All rights reserved.
 //
 
+// DEPRECATION NOTE: This ViewController was used for HW 2, but is now deprecated and unused in HW 3
+
 import UIKit
 
 class ViewController: UIViewController, UITextFieldDelegate{
@@ -50,10 +52,10 @@ class ViewController: UIViewController, UITextFieldDelegate{
         robert.setFirstName(firstName: "Robert")
         robert.setLastName(lastName: "Steilberg")
         robert.setWhereFrom(whereFrom: "Richmond, VA")
-        robert.setGender(gender: .Male)
-        robert.setRole(role: .Student)
+        robert.setGender(gender: "Male")
+        robert.setRole(role: "Student")
         robert.setSchool(school: "Duke University")
-        robert.setDegree(degree: .BS)
+        robert.setDegree(degree: "BS")
         robert.setGPA(gpa: 3.8)
         robert.addLanguage(language: "Python")
         robert.addLanguage(language: "JavaScript")
@@ -68,10 +70,10 @@ class ViewController: UIViewController, UITextFieldDelegate{
         ric.setFirstName(firstName: "Ric")
         ric.setLastName(lastName: "Telford")
         ric.setWhereFrom(whereFrom: "Morrisville, NC")
-        ric.setGender(gender: .Male)
-        ric.setRole(role: .Professor)
+        ric.setGender(gender: "Male")
+        ric.setRole(role: "Professor")
         ric.setSchool(school: "Trinity University")
-        ric.setDegree(degree: .MENG)
+        ric.setDegree(degree: "MENG")
         ric.setGPA(gpa: 3.9) // for testing findHighestGPA()
         ric.addLanguages(languages: ["Swift", "C", "C++"])
         ric.addHobbies(hobbies: ["golf", "swimming", "biking"])
@@ -82,10 +84,10 @@ class ViewController: UIViewController, UITextFieldDelegate{
         gilbert.setFirstName(firstName: "Gilbert")
         gilbert.setLastName(lastName: "Brooks")
         gilbert.setWhereFrom(whereFrom: "Shelby, NC")
-        gilbert.setGender(gender: .Male)
-        gilbert.setRole(role: .TA)
+        gilbert.setGender(gender: "Male")
+        gilbert.setRole(role: "TA")
         gilbert.setSchool(school: "Duke University")
-        gilbert.setDegree(degree: .BS)
+        gilbert.setDegree(degree: "BS")
         gilbert.addLanguages(languages: ["Swift", "Java"])
         gilbert.addHobbies(hobbies: ["user experience", "product development"])
         
@@ -95,10 +97,10 @@ class ViewController: UIViewController, UITextFieldDelegate{
         niral.setFirstName(firstName: "Niral")
         niral.setLastName(lastName: "Shah")
         niral.setWhereFrom(whereFrom: "central New Jersey")
-        niral.setGender(gender: .Male)
-        niral.setRole(role: .TA)
+        niral.setGender(gender: "Male")
+        niral.setRole(role: "TA")
         niral.setSchool(school: "Rutgers University")
-        niral.setDegree(degree: .BS)
+        niral.setDegree(degree: "BS")
         niral.addLanguages(languages: ["Swift", "Python", "Java"])
         niral.addHobbies(hobbies: ["computer vision", "tennis", "travelling"])
         
@@ -281,9 +283,9 @@ class ViewController: UIViewController, UITextFieldDelegate{
         let genderString: String = attributes["gender"]!.fieldView.text!
         switch (genderString.lowercased()) {
         case "male":
-            newDukePerson.setGender(gender: .Male)
+            newDukePerson.setGender(gender: "Male")
         case "female":
-            newDukePerson.setGender(gender: .Female)
+            newDukePerson.setGender(gender: "Gender")
         default:
             handleIncorrectData(field: "Gender")
             return
@@ -292,11 +294,11 @@ class ViewController: UIViewController, UITextFieldDelegate{
         let roleString: String = attributes["role"]!.fieldView.text!
         switch (roleString.lowercased()) {
         case "student":
-            newDukePerson.setRole(role: .Student)
+            newDukePerson.setRole(role: "Student")
         case "ta":
-            newDukePerson.setRole(role: .TA)
+            newDukePerson.setRole(role: "TA")
         case "professor":
-            newDukePerson.setRole(role: .Professor)
+            newDukePerson.setRole(role: "Professor")
         default:
             handleIncorrectData(field: "Role")
             return
@@ -304,7 +306,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
         
         newDukePerson.setSchool(school: attributes["school"]!.fieldView.text!)
         
-        newDukePerson.setDegree(degree: getDegreeFromString(degreeString: attributes["degree"]!.fieldView.text!))
+        newDukePerson.setDegree(degree: attributes["degree"]!.fieldView.text!)
         
         let gpaString: String = attributes["gpa"]!.fieldView.text!
         if let gpa: Double = Double(gpaString) {
@@ -411,7 +413,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
         var found: Bool = false
         var res: String = ""
         for dukePerson in self.dukePeople {
-            if dukePerson.getDegree() == degree {
+            if dukePerson.getDegree() == degree.rawValue {
                 found = true
                 res += dukePerson.getDescription() + "\n"
             }
@@ -501,6 +503,47 @@ class ViewController: UIViewController, UITextFieldDelegate{
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+}
+
+class DukePersonAttribute {
+    
+    var label: String?
+    
+    var placeholder: String?
+    
+    var labelView = UILabel()
+    
+    var fieldView = UITextField()
+    
+    init(label: String, placeholder: String, textFieldDelegate: UITextFieldDelegate) {
+        self.label = label
+        self.placeholder = placeholder
+        
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            return false
+        }
+        
+        self.labelView.text = self.label
+        self.labelView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.fieldView.delegate = textFieldDelegate
+        self.fieldView.placeholder = self.placeholder
+        self.fieldView.font = UIFont.systemFont(ofSize: 14)
+        self.fieldView.borderStyle = UITextBorderStyle.roundedRect
+        self.fieldView.layer.cornerRadius = 3.0
+        self.fieldView.layer.borderColor = UIColor( red: 118/255, green: 162/255, blue:246/255, alpha: 2.0 ).cgColor
+        self.fieldView.layer.borderWidth = 1
+        self.fieldView.autocorrectionType = UITextAutocorrectionType.no
+        if self.label == "GPA:" {
+            self.fieldView.keyboardType = UIKeyboardType.decimalPad
+        } else {
+            self.fieldView.keyboardType = UIKeyboardType.default
+        }
+        self.fieldView.returnKeyType = UIReturnKeyType.done
+        self.fieldView.clearButtonMode = UITextFieldViewMode.whileEditing
+        self.fieldView.contentVerticalAlignment = UIControlContentVerticalAlignment.center
+        self.fieldView.translatesAutoresizingMaskIntoConstraints = false
     }
 }
 
