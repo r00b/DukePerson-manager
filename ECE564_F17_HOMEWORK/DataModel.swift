@@ -61,7 +61,7 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
     var hobbies = [String]()
     
     var description: String {
-        return "\(self.firstName) \(self.lastName) is a \(self.gender) from \(self.whereFrom) and is a \(self.role). \(getTeamDescription()) \(getSchoolDescription()) \(getDegreeDescription()) \(getLanguagesDescription()) \(getHobbiesDescription())"
+        return "\(self.firstName) \(self.lastName) is a \(self.gender) from \(self.whereFrom) and is a \(self.role). \(getTeamDescription()) \(getSchoolDescription())\(getDegreeDescription()) \(getLanguagesDescription()) \(getHobbiesDescription())"
     }
     
     // MARK: public functions
@@ -135,9 +135,9 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
     
     private func getDegreeDescription() -> String {
         if degree != .NA {
-            return "with a \(self.degree)."
+            return " with a \(self.degree)."
         } else {
-            return ". "
+            return "."
         }
     }
     

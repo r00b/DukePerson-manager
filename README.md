@@ -36,9 +36,13 @@ I used the following videos/tutorials to help me understand how the storyboard, 
 * https://developer.apple.com/library/content/referencelibrary/GettingStarted/DevelopiOSAppsSwift/CreateATableView.html#//apple_ref/doc/uid/TP40015214-CH8-SW1
 * https://apoorv.blog/pickerview-as-input-textfield-swift/
 
-IMPORTANT NOTE: The project should be graded using a physical mobile device. Using a laptop keyboard to input into fields can bypass several UI elements that prevent incorrect input (i.e. only being able to use a UIPickerView to pick Gender). Running the application on the laptop and using the laptop's keyboard can cause unintended side effects.
+IMPORTANT NOTES:
 
-Additionally: I made the DukePerson description a scrollable TextView. You can scroll on the description in the TableView to see the entire description. Tap elsewhere (on the profile image or the name label) to see details for each DukePerson.
+* The project should be graded using a physical mobile device. Using a laptop keyboard to input into fields can bypass several UI elements that prevent incorrect input (i.e. only being able to use a UIPickerView to pick Gender). Running the application on the laptop and using the laptop's keyboard can cause unintended side effects.
+
+* I made the DukePerson description a scrollable TextView. You can scroll on the description in the TableView to see the entire description. Tap elsewhere (on the profile image or the name label) to see details for each DukePerson.
+
+* Towards the end of the project, my computer automatically updated to Xcode 9 overnight without my telling it to do so. I prevented it from converting my project to Swift 4 and making other updates, but if you have an issue compiling for whatever reason, it may be because of this upgrade. Please email me at rhs16@duke.edu if necessary.
 
 In addition to the project requirements, I also added the following improvements:
 
@@ -48,4 +52,4 @@ In addition to the project requirements, I also added the following improvements
 
 Known bugs:
 
-* When trying to edit a TextField near the bottom of the screen, the keyboard will cover it
+* When trying to edit a TextField near the bottom of the screen, the keyboard will cover it. I tried to fix this but it caused more harm than good.

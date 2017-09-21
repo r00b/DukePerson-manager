@@ -43,6 +43,8 @@ class DukePersonViewController: UIViewController, UITextFieldDelegate, UIPickerV
     @IBOutlet weak var hobby2TextField: UITextField!
     @IBOutlet weak var hobby3TextField: UITextField!
     
+    var activeField: UITextField?
+
     @IBOutlet weak var profilePicImageView: UIImageView!
     
     let genderPickerView = UIPickerView()
@@ -81,7 +83,7 @@ class DukePersonViewController: UIViewController, UITextFieldDelegate, UIPickerV
         genderTextField.inputView = genderPickerView
         roleTextField.inputView = rolePickerView
         degreeTextField.inputView = degreePickerView
-        
+     
         // see if we are being provided an existing DukePerson
         if let dukePerson = dukePerson {
             navigationItem.title = dukePerson.getFullName()
@@ -141,7 +143,6 @@ class DukePersonViewController: UIViewController, UITextFieldDelegate, UIPickerV
             // Edit button not pressed, execute the segue
             return true
         }
-
         if rightBarButton.title! == "Edit" {
             enableTextFieldEditing()
             rightBarButton.title = "Save"
@@ -239,9 +240,14 @@ class DukePersonViewController: UIViewController, UITextFieldDelegate, UIPickerV
         rightBarButton.isEnabled = false
     }
     
-    
-    
-    
+    // Check to see if all fields are valid, update modal title
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateRightBarButtonState()
+        let isPresentingInDukePersonDetailMode = !(presentingViewController is UINavigationController)
+        if (isPresentingInDukePersonDetailMode) {
+            navigationItem.title = dukePerson?.getFullName()
+        }
+    }
     
     // Dismiss keyboard when focus leaves TextField
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -254,14 +260,8 @@ class DukePersonViewController: UIViewController, UITextFieldDelegate, UIPickerV
         return true
     }
     
-    // Check to see if all fields are valid, update modal title
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        updateRightBarButtonState()
-        let isPresentingInDukePersonDetailMode = !(presentingViewController is UINavigationController)
-        if (isPresentingInDukePersonDetailMode) {
-            navigationItem.title = dukePerson?.getFullName()
-        }
-    }
+    
+    // MARK: Private functions
     
     private func updateRightBarButtonState() {
         // Disable the Save button if any of the following TextFields are empty

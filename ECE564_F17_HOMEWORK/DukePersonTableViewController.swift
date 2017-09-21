@@ -15,7 +15,7 @@ class DukePersonTableViewController: UITableViewController {
     
     var dukePersons: [[DukePerson]] = [[DukePerson](), [DukePerson](), [DukePerson]()]
     
-    var sections: [String] = ["Student", "TAs", "Professor"]
+    var sections: [String] = ["Students", "Teaching Assistants", "Professor"]
     
     
     // MARK: ViewController functions
@@ -130,10 +130,23 @@ class DukePersonTableViewController: UITableViewController {
     @IBAction func unwindToDukePersonList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? DukePersonViewController, let dukePerson = sourceViewController.dukePerson {
             
-            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            if var selectedIndexPath = tableView.indexPathForSelectedRow {
                 // we are updating an existing DukePerson
-                dukePersons[selectedIndexPath.section][selectedIndexPath.row] = dukePerson
-                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+                let newSection = getSectionFromRole(role: dukePerson.getRole())
+                if (newSection != selectedIndexPath.section) {
+                    // we are changing roles
+                    dukePersons[selectedIndexPath.section].remove(at: selectedIndexPath.row)
+                    tableView.deleteRows(at: [selectedIndexPath], with: .fade)
+//                    tableView.reloadRows(at: [selectedIndexPath], with: .none)
+
+                    let newIndexPath = IndexPath(row: dukePersons[newSection].count, section: newSection)
+                    dukePersons[newSection].append(dukePerson)
+                    tableView.insertRows(at: [newIndexPath], with: .automatic)
+
+                } else {
+                    dukePersons[selectedIndexPath.section][selectedIndexPath.row] = dukePerson
+                    tableView.reloadRows(at: [selectedIndexPath], with: .none)
+                }
             } else {
                 // we are adding a new DukePerson
                 let section = getSectionFromRole(role: dukePerson.getRole())
