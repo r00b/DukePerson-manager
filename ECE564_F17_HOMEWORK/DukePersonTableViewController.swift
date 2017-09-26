@@ -2,254 +2,250 @@
 //  DukePersonTableViewController.swift
 //  ECE564_F17_HOMEWORK
 //
-//  Created by Robert Steilberg on 9/19/17.
+//  Created by Robert Steilberg on 9/25/17.
 //  Copyright © 2017 ece564. All rights reserved.
 //
 
 import UIKit
 import os.log
 
-class DukePersonTableViewController: UITableViewController {
+class DukePersonTableViewController: UITableViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: Properties
     
-    var dukePersons: [[DukePerson]] = [[DukePerson](), [DukePerson](), [DukePerson]()]
+    // either passed by `DukeTableViewController` in `prepare(for:sender:)` or constructed as part of adding a new DukePerson
+    var dukePerson: DukePerson?
     
-    var sections: [String] = ["Students", "Teaching Assistants", "Professor"]
+    // define enums, since we can't just create an array from an enum class
+    let genders: [String] = ["Male", "Female"]
+    let roles: [String] = ["Student", "Teaching Assistant", "Professor"]
+    let degrees: [String] = ["MS", "BS", "MENG", "Ph.D", "N/A", "Other"]
     
     
-    // MARK: ViewController functions
+    // MARK: Views
+    
+    @IBOutlet var labels: [UILabel]!
+    
+    @IBOutlet var textFields: [UITextField]!
+    
+    let genderPickerView = UIPickerView()
+    let rolePickerView = UIPickerView()
+    let degreePickerView = UIPickerView()
+    
+    @IBOutlet weak var leftBarButton: UIBarButtonItem!
+    @IBOutlet weak var rightBarButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadSampleDukePersons()
+        updateWidthsForLabels(labels: labels)
+        updateRightBarButtonState()
 
-        // Use the edit button item provided by the table view controller for deleting entries
-        navigationItem.leftBarButtonItem = editButtonItem
-            }
-    
+        // dismiss keyboard when focus leaves text field
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(DukePersonTableViewController.hideKeyboard))
+        tapGesture.cancelsTouchesInView = true
+        tableView.addGestureRecognizer(tapGesture)
+        
+        genderPickerView.delegate = self
+        degreePickerView.delegate = self
+        rolePickerView.delegate = self
+        
+        for textField in textFields {
+            textField.delegate = self
+        }
+        
+        textFields[2].inputView = genderPickerView
+        textFields[5].inputView = degreePickerView
+        textFields[6].inputView = rolePickerView
+        
+        textFields[0].text = dukePerson?.getFirstName()
+        textFields[1].text = dukePerson?.getLastName()
+        textFields[2].text = dukePerson?.getGender()
+        textFields[3].text = dukePerson?.whereFrom
+        
+        textFields[4].text = dukePerson?.getSchool()
+        textFields[5].text = dukePerson?.getDegree()
+        textFields[6].text = dukePerson?.getRole()
+        textFields[7].text = dukePerson?.getTeam()
+
+        textFields[8].text = dukePerson?.getLanguage(index: 0)
+        textFields[9].text = dukePerson?.getLanguage(index: 1)
+        textFields[10].text = dukePerson?.getLanguage(index: 2)
+        
+        textFields[11].text = dukePerson?.getHobby(index: 0)
+        textFields[12].text = dukePerson?.getHobby(index: 1)
+        textFields[13].text = dukePerson?.getHobby(index: 2)
+
+        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    // MARK: TableView functions
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dukePersons[section].count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+   
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
         
-        // TableView cells are reused and should be dequeued using a cell identifier
-        let cellIdentifier = "DukePersonTableViewCell"
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? DukePersonTableViewCell else {
-            fatalError("The dequeued cell is not an instance of DukePersonTableViewCell")
+        // configure the destination view controller only when the save button is pressed.
+        guard let button = sender as? UIBarButtonItem, button === rightBarButton else {
+            os_log("The save button was not pressed, cancelling", log: OSLog.default, type: .debug)
+            return
         }
         
-        // fetch the appropriate DukePerson for the data source layout
-        let dukePerson = dukePersons[indexPath.section][indexPath.row]
+        //        let photo = profilePicImageView.image
         
-        // set text and description of each cell
-        cell.nameLabel.text = dukePerson.getFirstName() + " " + dukePerson.getLastName()
-        cell.descriptionTextView.text = dukePerson.getDescription()
-        cell.clipsToBounds = true
-        return cell
+        // creating a new DukePerson
+        dukePerson = DukePerson()
+        dukePerson?.setFirstName(firstName: textFields[0].text ?? "")
+        dukePerson?.setLastName(lastName: textFields[1].text ?? "")
+        dukePerson?.setGender(gender: textFields[2].text ?? "")
+        dukePerson?.setWhereFrom(whereFrom: textFields[3].text ?? "")
+
+        dukePerson?.setSchool(school: textFields[4].text ?? "")
+        dukePerson?.setDegree(degree: textFields[5].text ?? "")
+        dukePerson?.setRole(role: textFields[6].text ?? "")
+        dukePerson?.setTeam(team: textFields[7].text ?? "")
+        
+        dukePerson?.addLanguages(languages: [textFields[8].text ?? "", textFields[9].text ?? "", textFields[10].text ?? ""])
+        dukePerson?.addHobbies(hobbies: [textFields[11].text ?? "", textFields[12].text ?? "", textFields[13].text ?? ""])
+        
     }
     
-    // allow editing of cells in the TableView
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    // MARK: Actions
+    
+    @IBAction func leftBarButton(_ sender: Any) {
+        // Depending on style of presentation (modal or push presentation), this view controller needs to be dismissed in two different ways
+        let isPresentingInAddDukePersonMode = presentingViewController is UINavigationController
+        
+        if isPresentingInAddDukePersonMode {
+            // cancel adding new DukePerson
+            dismiss(animated: true, completion: nil)
+        } else if let owningNavigationController = navigationController {
+            // go back to list of DukePersons
+            owningNavigationController.popViewController(animated: true)
+        } else {
+            fatalError("The DukePersonViewController is not inside a navigation controller")
+        }
+    }
+    
+    
+    
+    
+    // MARK: UIPickerViewDelegate / UIPickerViewDataSource functions
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        switch pickerView {
+        case genderPickerView:
+            return genders.count
+        case rolePickerView:
+            return roles.count
+        case degreePickerView:
+            return degrees.count
+        default:
+            fatalError("Invalid Picker View used in controller.")
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        switch pickerView {
+        case genderPickerView:
+            return genders[row]
+        case rolePickerView:
+            return roles[row]
+        case degreePickerView:
+            return degrees[row]
+        default:
+            fatalError("Invalid Picker View used in controller.")
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        switch pickerView {
+        case genderPickerView:
+            textFields[2].text = genders[row]
+        case degreePickerView:
+            textFields[5].text = degrees[row]
+        case rolePickerView:
+            textFields[6].text = roles[row]
+        default:
+            fatalError("Invalid Picker View used in controller.")
+        }
+    }
+
+    
+    
+    
+    
+    //MARK: UITextFieldDelegate functions
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Disable the Save button while editing.
+        rightBarButton.isEnabled = false
+    }
+    
+    // Check to see if all fields are valid, update modal title
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateRightBarButtonState()
+//        let isPresentingInDukePersonDetailMode = !(presentingViewController is UINavigationController)
+//        if (isPresentingInDukePersonDetailMode) {
+//            navigationItem.title = dukePerson?.getFullName()
+//        }
+    }
+    
+    // Dismiss keyboard
+    func hideKeyboard() {
+        tableView.endEditing(true)
+    }
+    
+    // Dismiss keyboard when "Done" is pressed
+    func textFieldShouldReturn(_ scoreText: UITextField) -> Bool {
+        hideKeyboard()
         return true
     }
     
-    // back-end support for editing cells in the TableView
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // delete the row from the data source
-            dukePersons[indexPath.section].remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    // MARK: Private functions
+    
+    private func calculateLabelWidth(label: UILabel) -> CGFloat {
+        let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: label.frame.height))
+        
+        return labelSize.width
+    }
+    
+    private func calculateMaxLabelWidth(labels: [UILabel]) -> CGFloat {
+        return labels.map(calculateLabelWidth).reduce(0, max)
+    }
+    
+    private func updateWidthsForLabels(labels: [UILabel]) {
+        let maxLabelWidth = calculateMaxLabelWidth(labels: labels)
+        for label in labels {
+            let constraint = NSLayoutConstraint(item: label,
+                                                attribute: .width,
+                                                relatedBy: .equal,
+                                                toItem: nil,
+                                                attribute: .notAnAttribute,
+                                                multiplier: 1,
+                                                constant: maxLabelWidth)
+            label.addConstraint(constraint)
         }
     }
     
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    
-    // MARK: Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        switch(segue.identifier ?? "") {
-        case "AddDukePerson":
-            os_log("adding a new DukePerson", log: OSLog.default, type: .debug)
-        case "ShowDetail":
-            guard let dukePersonViewController = segue.destination as? DukePersonViewController else {
-                fatalError("unexpected destination: \(segue.destination)")
-            }
-            guard let selectedDukePersonCell = sender as? DukePersonTableViewCell else {
-                fatalError("unexpected sender: \(String(describing: sender))")
-            }
-            guard let indexPath = tableView.indexPath(for: selectedDukePersonCell) else {
-                fatalError("the selected cell is not being displayed by the table")
-            }
-            let selectedDukePerson = dukePersons[indexPath.section][indexPath.row]
-            // set the DukePerson that the DukePersonViewController with initialize with
-            dukePersonViewController.dukePerson = selectedDukePerson
-        default:
-            fatalError("unexpected Segue Identifier: \(String(describing: segue.identifier))")
-        }
+    private func updateRightBarButtonState() {
+        // Disable the Save button if any of the following TextFields are empty
+        let firstName = textFields[0].text ?? ""
+        let lastName = textFields[1].text ?? ""
+        let gender = textFields[2].text ?? ""
+        let from = textFields[3].text ?? ""
+        let school = textFields[4].text ?? ""
+        let role = textFields[6].text ?? ""
+        rightBarButton.isEnabled = !firstName.isEmpty && !lastName.isEmpty && !gender.isEmpty && !from.isEmpty && !school.isEmpty && !role.isEmpty
     }
-    
-    
-    //MARK: Actions
-    
-    @IBAction func unwindToDukePersonList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? DukePersonViewController, let dukePerson = sourceViewController.dukePerson {
-            
-            if var selectedIndexPath = tableView.indexPathForSelectedRow {
-                // we are updating an existing DukePerson
-                let newSection = getSectionFromRole(role: dukePerson.getRole())
-                if (newSection != selectedIndexPath.section) {
-                    // we are changing roles
-                    dukePersons[selectedIndexPath.section].remove(at: selectedIndexPath.row)
-                    tableView.deleteRows(at: [selectedIndexPath], with: .fade)
-//                    tableView.reloadRows(at: [selectedIndexPath], with: .none)
 
-                    let newIndexPath = IndexPath(row: dukePersons[newSection].count, section: newSection)
-                    dukePersons[newSection].append(dukePerson)
-                    tableView.insertRows(at: [newIndexPath], with: .automatic)
-
-                } else {
-                    dukePersons[selectedIndexPath.section][selectedIndexPath.row] = dukePerson
-                    tableView.reloadRows(at: [selectedIndexPath], with: .none)
-                }
-            } else {
-                // we are adding a new DukePerson
-                let section = getSectionFromRole(role: dukePerson.getRole())
-                let newIndexPath = IndexPath(row: dukePersons[section].count, section: section)
-                dukePersons[section].append(dukePerson)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-            }
-        }
-    }
-    
-    
-    //MARK: Private Methods
-    
-    private func loadSampleDukePersons() {
-        let robert = DukePerson()
-        robert.setFirstName(firstName: "Robert")
-        robert.setLastName(lastName: "Steilberg")
-        robert.setWhereFrom(whereFrom: "Richmond, VA")
-        robert.setGender(gender: "Male")
-        robert.setRole(role: "Student")
-        robert.setTeam(team: "FirePage")
-        robert.setSchool(school: "Duke University")
-        robert.setDegree(degree: "BS")
-        robert.setGPA(gpa: 3.8)
-        robert.addLanguage(language: "Python")
-        robert.addLanguage(language: "JavaScript")
-        robert.addLanguage(language: "Ruby")
-        robert.addHobby(hobby: "Super Smash Bros.")
-        robert.addHobby(hobby: "skiing")
-        robert.addHobby(hobby: "SCUBA diving")
-        
-        self.dukePersons[0].append(robert)
-        
-        let teddy = DukePerson()
-        teddy.setFirstName(firstName: "Teddy")
-        teddy.setLastName(lastName: "Franceschi")
-        teddy.setWhereFrom(whereFrom: "Los Angeles, CA")
-        teddy.setGender(gender: "Male")
-        teddy.setRole(role: "Student")
-        teddy.setTeam(team: "FirePage")
-        teddy.setSchool(school: "Duke University")
-        teddy.setDegree(degree: "BS")
-        teddy.addLanguage(language: "MATLAB")
-        teddy.addLanguage(language: "Java")
-        teddy.addLanguage(language: "Swift")
-        teddy.addHobby(hobby: "Super Smash Bros.")
-        teddy.addHobby(hobby: "hiking")
-        teddy.addHobby(hobby: "lifting")
-        
-        self.dukePersons[0].append(teddy)
-        
-        let ric = DukePerson()
-        ric.setFirstName(firstName: "Ric")
-        ric.setLastName(lastName: "Telford")
-        ric.setWhereFrom(whereFrom: "Morrisville, NC")
-        ric.setGender(gender: "Male")
-        ric.setRole(role: "Professor")
-        ric.setSchool(school: "Trinity University")
-        ric.setDegree(degree: "MENG")
-        ric.setGPA(gpa: 3.9) // for testing findHighestGPA() in HW 1 & 2
-        ric.addLanguages(languages: ["Swift", "C", "C++"])
-        ric.addHobbies(hobbies: ["golf", "swimming", "biking"])
-        
-        self.dukePersons[2].append(ric)
-        
-        let gilbert = DukePerson()
-        gilbert.setFirstName(firstName: "Gilbert")
-        gilbert.setLastName(lastName: "Brooks")
-        gilbert.setWhereFrom(whereFrom: "Shelby, NC")
-        gilbert.setGender(gender: "Male")
-        gilbert.setRole(role: "Teaching Assistant")
-        gilbert.setSchool(school: "Duke University")
-        gilbert.setDegree(degree: "BS")
-        gilbert.addLanguages(languages: ["Swift", "Java"])
-        gilbert.addHobbies(hobbies: ["user experience", "product development"])
-        
-        self.dukePersons[1].append(gilbert)
-        
-        let niral = DukePerson()
-        niral.setFirstName(firstName: "Niral")
-        niral.setLastName(lastName: "Shah")
-        niral.setWhereFrom(whereFrom: "central New Jersey")
-        niral.setGender(gender: "Male")
-        niral.setRole(role: "Teaching Assistant")
-        niral.setSchool(school: "Rutgers University")
-        niral.setDegree(degree: "BS")
-        niral.addLanguages(languages: ["Swift", "Python", "Java"])
-        niral.addHobbies(hobbies: ["computer vision", "tennis", "travelling"])
-        
-        self.dukePersons[1].append(niral)
-    }
-    
-    // map each role to a section index
-    private func getSectionFromRole(role: String) -> Int {
-        switch role {
-        case "Student":
-            return 0
-        case "Teaching Assistant":
-            return 1
-        case "Professor":
-            return 2
-        default:
-            fatalError("DukePerson of invalid role created")
-        }
-    }
 }
