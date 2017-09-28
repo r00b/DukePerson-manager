@@ -2,4 +2,145 @@
 <Bucket
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ECE564_F17_HOMEWORK/DukePersonTableViewController.swift"
+            timestampString = "528096045.03973"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "DukePersonTableViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ECE564_F17_HOMEWORK.DukePersonTableViewController.__deallocating_deinit"
+                  moduleName = "ECE564_F17_HOMEWORK"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Robert/Servers/Google%20Drive/Duke%20University/Classes/ECE%20564/Work/ECE564_HOMEWORK/ECE564_F17_HOMEWORK/DukePersonTableViewController.swift"
+                  timestampString = "528091972.549864"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ECE564_F17_HOMEWORK.DukePersonTableViewController.init (style : __C.UITableViewStyle) -&gt; ECE564_F17_HOMEWORK.DukePersonTableViewController"
+                  moduleName = "ECE564_F17_HOMEWORK"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Robert/Servers/Google%20Drive/Duke%20University/Classes/ECE%20564/Work/ECE564_HOMEWORK/ECE564_F17_HOMEWORK/DukePersonTableViewController.swift"
+                  timestampString = "528091972.552757"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ECE564_F17_HOMEWORK.DukePersonTableViewController.__allocating_init (style : __C.UITableViewStyle) -&gt; ECE564_F17_HOMEWORK.DukePersonTableViewController"
+                  moduleName = "ECE564_F17_HOMEWORK"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Robert/Servers/Google%20Drive/Duke%20University/Classes/ECE%20564/Work/ECE564_HOMEWORK/ECE564_F17_HOMEWORK/DukePersonTableViewController.swift"
+                  timestampString = "528091972.555009"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "9">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ECE564_F17_HOMEWORK.DukePersonTableViewController.init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; ECE564_F17_HOMEWORK.DukePersonTableViewController"
+                  moduleName = "ECE564_F17_HOMEWORK"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Robert/Servers/Google%20Drive/Duke%20University/Classes/ECE%20564/Work/ECE564_HOMEWORK/ECE564_F17_HOMEWORK/DukePersonTableViewController.swift"
+                  timestampString = "528091972.556834"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "77">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ECE564_F17_HOMEWORK.DukePersonTableViewController.__allocating_init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; ECE564_F17_HOMEWORK.DukePersonTableViewController"
+                  moduleName = "ECE564_F17_HOMEWORK"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Robert/Servers/Google%20Drive/Duke%20University/Classes/ECE%20564/Work/ECE564_HOMEWORK/ECE564_F17_HOMEWORK/DukePersonTableViewController.swift"
+                  timestampString = "528091972.559512"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "26">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ECE564_F17_HOMEWORK.DukePersonTableViewController.__allocating_init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;ECE564_F17_HOMEWORK.DukePersonTableViewController&gt;"
+                  moduleName = "ECE564_F17_HOMEWORK"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Robert/Servers/Google%20Drive/Duke%20University/Classes/ECE%20564/Work/ECE564_HOMEWORK/ECE564_F17_HOMEWORK/DukePersonTableViewController.swift"
+                  timestampString = "528091972.561766"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "9">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ECE564_F17_HOMEWORK.DukePersonTableViewController.init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;ECE564_F17_HOMEWORK.DukePersonTableViewController&gt;"
+                  moduleName = "ECE564_F17_HOMEWORK"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Robert/Servers/Google%20Drive/Duke%20University/Classes/ECE%20564/Work/ECE564_HOMEWORK/ECE564_F17_HOMEWORK/DukePersonTableViewController.swift"
+                  timestampString = "528091972.563662"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "37">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ECE564_F17_HOMEWORK/DukePeopleTableViewController.swift"
+            timestampString = "528172414.511487"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "unwindToDukePersonList(sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

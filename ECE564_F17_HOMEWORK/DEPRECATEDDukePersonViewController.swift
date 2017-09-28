@@ -86,8 +86,8 @@ class DukePersonViewController: UIViewController, UITextFieldDelegate, UIPickerV
      
         // see if we are being provided an existing DukePerson
         if let dukePerson = dukePerson {
-            navigationItem.title = dukePerson.getFullName()
             
+            navigationItem.title = dukePerson.getFullName()
             leftBarButton.title = "Back"
             rightBarButton.title = "Edit"
             rightBarButton.isEnabled = true
