@@ -48,7 +48,7 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
     
     var role: DukeRole = .Student
     
-    var team: String = "N/A"
+    var team: String = ""
     
     var school: String = ""
     
@@ -59,6 +59,8 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
     var languages = [String]()
     
     var hobbies = [String]()
+    
+    var animationController: UIViewController?
     
     var description: String {
         return "\(self.firstName) \(self.lastName) is a \(self.gender) from \(self.whereFrom) and is a \(self.role). \(getTeamDescription()) \(getSchoolDescription())\(getDegreeDescription()) \(getLanguagesDescription()) \(getHobbiesDescription())"
@@ -238,6 +240,13 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
         }
     }
     
+    func getAnimationController() -> UIViewController? {
+        guard let animationController = self.animationController else {
+            return nil
+        }
+        return animationController
+    }
+    
     
     // MARK: setters
     
@@ -308,5 +317,9 @@ class DukePerson: Person, BlueDevil, CustomStringConvertible {
     
     func setGPA(gpa: Double) {
         self.gpa = gpa
+    }
+    
+    func setAnimationController(controller: UIViewController) {
+        self.animationController = controller
     }
 }

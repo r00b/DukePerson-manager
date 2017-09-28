@@ -16,41 +16,24 @@ class DukePersonPageViewController: UIPageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-        
         dataSource = self
-        
-        let page1 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DukePersonTableView") as! DukePersonTableViewController
-        page1.dukePerson = dukePerson
-        let page2 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HobbyView")
+        self.navigationController?.navigationBar.isTranslucent = false;
 
-        pages.append(page1)
-        pages.append(page2)
-        
-        setViewControllers([page1], direction: .forward, animated: true, completion: nil)
-        
+        let detailPage = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DukePersonTableView") as! DukePersonTableViewController
+        // pass through DukePerson data
+        detailPage.dukePerson = dukePerson
+        pages.append(detailPage)
 
+        self.navigationItem.leftBarButtonItem = detailPage.leftBarButton
+        self.navigationItem.rightBarButtonItem = detailPage.rightBarButton
+        self.navigationItem.title = dukePerson?.getFullName()
+        setViewControllers([detailPage], direction: .forward, animated: true, completion: nil)
         
-        
+        // check if DukePerson instance has an animation
+        if let animation = dukePerson?.getAnimationController() {
+            pages.append(animation)
+        }
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
 
 // MARK: UIPageViewControllerDataSource
@@ -72,7 +55,6 @@ extension DukePersonPageViewController: UIPageViewControllerDataSource {
         guard pages.count > previousIndex else {
             return nil
         }
-        print("FE")
         return pages[previousIndex]
     }
     
@@ -110,5 +92,4 @@ extension DukePersonPageViewController: UIPageViewControllerDataSource {
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
         return 0
     }
-    
 }

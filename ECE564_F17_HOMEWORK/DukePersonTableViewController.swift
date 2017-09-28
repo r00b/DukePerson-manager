@@ -38,8 +38,9 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         updateWidthsForLabels(labels: labels)
+        
         updateRightBarButtonState()
-
+        
         // dismiss keyboard when focus leaves text field
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(DukePersonTableViewController.hideKeyboard))
         tapGesture.cancelsTouchesInView = true
@@ -57,36 +58,50 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         textFields[5].inputView = degreePickerView
         textFields[6].inputView = rolePickerView
         
-        textFields[0].text = dukePerson?.getFirstName()
-        textFields[1].text = dukePerson?.getLastName()
-        textFields[2].text = dukePerson?.getGender()
-        textFields[3].text = dukePerson?.whereFrom
-        
-        textFields[4].text = dukePerson?.getSchool()
-        textFields[5].text = dukePerson?.getDegree()
-        textFields[6].text = dukePerson?.getRole()
-        textFields[7].text = dukePerson?.getTeam()
-
-        textFields[8].text = dukePerson?.getLanguage(index: 0)
-        textFields[9].text = dukePerson?.getLanguage(index: 1)
-        textFields[10].text = dukePerson?.getLanguage(index: 2)
-        
-        textFields[11].text = dukePerson?.getHobby(index: 0)
-        textFields[12].text = dukePerson?.getHobby(index: 1)
-        textFields[13].text = dukePerson?.getHobby(index: 2)
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        if let dukePerson = dukePerson {
+            
+            self.navigationItem.leftBarButtonItem?.title = "Back"
+            self.navigationItem.rightBarButtonItem?.title = "Edit"
+            rightBarButton.isEnabled = true
+            
+            textFields[0].text = dukePerson.getFirstName()
+            textFields[1].text = dukePerson.getLastName()
+            textFields[2].text = dukePerson.getGender()
+            textFields[3].text = dukePerson.whereFrom
+            
+            textFields[4].text = dukePerson.getSchool()
+            textFields[5].text = dukePerson.getDegree()
+            textFields[6].text = dukePerson.getRole()
+            textFields[7].text = dukePerson.getTeam()
+            
+            textFields[8].text = dukePerson.getLanguage(index: 0)
+            textFields[9].text = dukePerson.getLanguage(index: 1)
+            textFields[10].text = dukePerson.getLanguage(index: 2)
+            
+            textFields[11].text = dukePerson.getHobby(index: 0)
+            textFields[12].text = dukePerson.getHobby(index: 1)
+            textFields[13].text = dukePerson.getHobby(index: 2)
+            
+            setTextFieldsEditable(editable: false)
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-   
+    
     // MARK: - Navigation
-
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        guard let button = sender as? UIBarButtonItem, button === rightBarButton else {
+            // Edit button not pressed, execute the segue
+            return true
+        }
+        if rightBarButton.title! == "Edit" {
+            setTextFieldsEditable(editable: true)
+            rightBarButton.title = "Save"
+            // cancel the segue
+            return false
+        }
+        return true
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
@@ -97,27 +112,29 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         }
         
         //        let photo = profilePicImageView.image
-        
+      
         // creating a new DukePerson
-        dukePerson = DukePerson()
-        dukePerson?.setFirstName(firstName: textFields[0].text ?? "")
-        dukePerson?.setLastName(lastName: textFields[1].text ?? "")
-        dukePerson?.setGender(gender: textFields[2].text ?? "")
-        dukePerson?.setWhereFrom(whereFrom: textFields[3].text ?? "")
-
-        dukePerson?.setSchool(school: textFields[4].text ?? "")
-        dukePerson?.setDegree(degree: textFields[5].text ?? "")
-        dukePerson?.setRole(role: textFields[6].text ?? "")
-        dukePerson?.setTeam(team: textFields[7].text ?? "")
+        let newDukePerson = DukePerson()
+        newDukePerson.setFirstName(firstName: textFields[0].text ?? "")
+        newDukePerson.setLastName(lastName: textFields[1].text ?? "")
+        newDukePerson.setGender(gender: textFields[2].text ?? "")
+        newDukePerson.setWhereFrom(whereFrom: textFields[3].text ?? "")
+        newDukePerson.setSchool(school: textFields[4].text ?? "")
+        newDukePerson.setDegree(degree: textFields[5].text ?? "")
+        newDukePerson.setRole(role: textFields[6].text ?? "")
+        newDukePerson.setTeam(team: textFields[7].text ?? "")
+        newDukePerson.addLanguages(languages: [textFields[8].text ?? "", textFields[9].text ?? "", textFields[10].text ?? ""])
+        newDukePerson.addHobbies(hobbies: [textFields[11].text ?? "", textFields[12].text ?? "", textFields[13].text ?? ""])
+        if let animationController = dukePerson?.getAnimationController() {
+            newDukePerson.setAnimationController(controller: animationController)
+        }
         
-        dukePerson?.addLanguages(languages: [textFields[8].text ?? "", textFields[9].text ?? "", textFields[10].text ?? ""])
-        dukePerson?.addHobbies(hobbies: [textFields[11].text ?? "", textFields[12].text ?? "", textFields[13].text ?? ""])
-        
+        dukePerson = newDukePerson
     }
     
     // MARK: Actions
     
-    @IBAction func leftBarButton(_ sender: Any) {
+    @IBAction func leftBarButtonAction(_ sender: UIBarButtonItem) {
         // Depending on style of presentation (modal or push presentation), this view controller needs to be dismissed in two different ways
         let isPresentingInAddDukePersonMode = presentingViewController is UINavigationController
         
@@ -128,13 +145,10 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
             // go back to list of DukePersons
             owningNavigationController.popViewController(animated: true)
         } else {
-            fatalError("The DukePersonViewController is not inside a navigation controller")
+            fatalError("The DukePersonTableViewController is not inside a navigation controller")
         }
     }
-    
-    
-    
-    
+
     // MARK: UIPickerViewDelegate / UIPickerViewDataSource functions
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -150,7 +164,7 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         case degreePickerView:
             return degrees.count
         default:
-            fatalError("Invalid Picker View used in controller.")
+            fatalError("Invalid PickerView used in controller.")
         }
     }
     
@@ -163,7 +177,7 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         case degreePickerView:
             return degrees[row]
         default:
-            fatalError("Invalid Picker View used in controller.")
+            fatalError("Invalid PickerView used in controller.")
         }
     }
     
@@ -176,14 +190,11 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         case rolePickerView:
             textFields[6].text = roles[row]
         default:
-            fatalError("Invalid Picker View used in controller.")
+            fatalError("Invalid PickerView used in controller.")
         }
     }
+    
 
-    
-    
-    
-    
     //MARK: UITextFieldDelegate functions
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -194,10 +205,10 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
     // Check to see if all fields are valid, update modal title
     func textFieldDidEndEditing(_ textField: UITextField) {
         updateRightBarButtonState()
-//        let isPresentingInDukePersonDetailMode = !(presentingViewController is UINavigationController)
-//        if (isPresentingInDukePersonDetailMode) {
-//            navigationItem.title = dukePerson?.getFullName()
-//        }
+        //        let isPresentingInDukePersonDetailMode = !(presentingViewController is UINavigationController)
+        //        if (isPresentingInDukePersonDetailMode) {
+        //            navigationItem.title = dukePerson?.getFullName()
+        //        }
     }
     
     // Dismiss keyboard
@@ -211,11 +222,11 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         return true
     }
     
+    
     // MARK: Private functions
     
     private func calculateLabelWidth(label: UILabel) -> CGFloat {
         let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: label.frame.height))
-        
         return labelSize.width
     }
     
@@ -245,7 +256,20 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         let from = textFields[3].text ?? ""
         let school = textFields[4].text ?? ""
         let role = textFields[6].text ?? ""
-        rightBarButton.isEnabled = !firstName.isEmpty && !lastName.isEmpty && !gender.isEmpty && !from.isEmpty && !school.isEmpty && !role.isEmpty
-    }
+        let team = textFields[7].text ?? ""
 
+        var teamValid = true
+        if team != "" {
+            teamValid = (role == "Student")
+        }
+        
+        rightBarButton.isEnabled = !firstName.isEmpty && !lastName.isEmpty && !gender.isEmpty && !from.isEmpty && !school.isEmpty && !role.isEmpty && teamValid
+    }
+    
+    private func setTextFieldsEditable(editable: Bool) {
+        for textField in textFields {
+            textField.isUserInteractionEnabled = editable
+        }
+    }
+    
 }

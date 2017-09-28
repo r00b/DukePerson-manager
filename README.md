@@ -54,3 +54,15 @@ In addition to the project requirements, I also added the following improvements
 Known bugs:
 
 * When trying to edit a TextField near the bottom of the screen, the keyboard will cover it. I tried to fix this but it caused more harm than good.
+
+
+## HW 4
+
+I resolved the issue with the keyboard covering the text fields in this HW.
+
+To see an animation, go to "Robert Steilberg" from the TableView. Notice that one of his hobbies is SCUBA diving. Swipe right to see that animation. Swipe left to get back to the detail page. Notice that no other DukePersons have an aniation view.
+
+In addition to the project requirements, I also added the following improvements:
+
+* detail and animation views are handled via a PageController
+* animations and drawings are createive (in my opinion) and a bit complex

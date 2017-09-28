@@ -130,30 +130,30 @@ class DukePeopleTableViewController: UITableViewController {
     @IBAction func unwindToDukePersonList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? DukePersonTableViewController, let dukePerson = sourceViewController.dukePerson {
             
-//            if var selectedIndexPath = tableView.indexPathForSelectedRow {
-//                // we are updating an existing DukePerson
-//                let newSection = getSectionFromRole(role: dukePerson.getRole())
-//                if (newSection != selectedIndexPath.section) {
-//                    // we are changing roles
-//                    dukePersons[selectedIndexPath.section].remove(at: selectedIndexPath.row)
-//                    tableView.deleteRows(at: [selectedIndexPath], with: .fade)
-//                    //                    tableView.reloadRows(at: [selectedIndexPath], with: .none)
-//                    
-//                    let newIndexPath = IndexPath(row: dukePersons[newSection].count, section: newSection)
-//                    dukePersons[newSection].append(dukePerson)
-//                    tableView.insertRows(at: [newIndexPath], with: .automatic)
-//                    
-//                } else {
-//                    dukePersons[selectedIndexPath.section][selectedIndexPath.row] = dukePerson
-//                    tableView.reloadRows(at: [selectedIndexPath], with: .none)
-//                }
-//            } else {
+            if var selectedIndexPath = tableView.indexPathForSelectedRow {
+                // we are updating an existing DukePerson
+                let newSection = getSectionFromRole(role: dukePerson.getRole())
+                if (newSection != selectedIndexPath.section) {
+                    // we are changing roles
+                    dukePersons[selectedIndexPath.section].remove(at: selectedIndexPath.row)
+                    tableView.deleteRows(at: [selectedIndexPath], with: .fade)
+                    //                    tableView.reloadRows(at: [selectedIndexPath], with: .none)
+                    
+                    let newIndexPath = IndexPath(row: dukePersons[newSection].count, section: newSection)
+                    dukePersons[newSection].append(dukePerson)
+                    tableView.insertRows(at: [newIndexPath], with: .automatic)
+                    
+                } else {
+                    dukePersons[selectedIndexPath.section][selectedIndexPath.row] = dukePerson
+                    tableView.reloadRows(at: [selectedIndexPath], with: .none)
+                }
+            } else {
                 // we are adding a new DukePerson
                 let section = getSectionFromRole(role: dukePerson.getRole())
                 let newIndexPath = IndexPath(row: dukePersons[section].count, section: section)
                 dukePersons[section].append(dukePerson)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
-//            }
+            }
         }
     }
     
@@ -177,6 +177,7 @@ class DukePeopleTableViewController: UITableViewController {
         robert.addHobby(hobby: "Super Smash Bros.")
         robert.addHobby(hobby: "skiing")
         robert.addHobby(hobby: "SCUBA diving")
+        robert.setAnimationController(controller: HobbySCUBAViewController())
         
         self.dukePersons[0].append(robert)
         
