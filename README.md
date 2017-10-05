@@ -60,12 +60,12 @@ Known bugs:
 
 I resolved the issue with the keyboard covering the text fields in this HW.
 
-To see an animation, go to "Robert Steilberg" from the TableView. Notice that one of his hobbies is SCUBA diving. Swipe right to see that animation. Swipe left to get back to the detail page. Notice that no other DukePersons have an aniation view.
+To see an animation, go to "Robert Steilberg" from the TableView. Notice that one of his hobbies is SCUBA diving. Swipe right to see that animation. Swipe left to get back to the detail page. Notice that no other DukePersons have an animation view.
 
 In addition to the project requirements, I also added the following improvements:
 
 * detail and animation views are handled via a PageController
-* animations and drawings are createive (in my opinion) and a bit complex
+* animations and drawings are creative (in my opinion) and a bit complex
 
 ## HW 5
 
