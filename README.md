@@ -66,3 +66,18 @@ In addition to the project requirements, I also added the following improvements
 
 * detail and animation views are handled via a PageController
 * animations and drawings are createive (in my opinion) and a bit complex
+
+## HW 5
+
+To set a DukePerson's image, simply navigate to that DukePerson's detail page, and then tap their profile picture. You will be prompted to take an image and that image will be saved to memory. When creating a new DukePerson, tap on the profile picture to take and choose an image.
+
+I used the following source to get data persistance and image support working:
+
+* https://developer.apple.com/library/content/referencelibrary/GettingStarted/DevelopiOSAppsSwift/PersistData.html#//apple_ref/doc/uid/TP40015214-CH14-SW1
+* https://newfivefour.com/swift-ios-choose-an-image-UIImagePickerController.html
+* https://developer.apple.com/library/content/samplecode/PhotoPicker/Introduction/Intro.html
+
+In addition to the project requirements, I also added the following improvements:
+
+* images persist with other data
+* additional information about DukePersons can be stored (GPA, job experience, years of experience)

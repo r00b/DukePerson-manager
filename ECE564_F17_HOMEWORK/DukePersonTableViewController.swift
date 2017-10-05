@@ -9,7 +9,7 @@
 import UIKit
 import os.log
 
-class DukePersonTableViewController: UITableViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class DukePersonTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: Properties
     
@@ -28,6 +28,9 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
     
     @IBOutlet var textFields: [UITextField]!
     
+    @IBOutlet weak var profilePicture: UIImageView!
+    let profilePicturePicker = UIImagePickerController()
+    
     let genderPickerView = UIPickerView()
     let rolePickerView = UIPickerView()
     let degreePickerView = UIPickerView()
@@ -42,10 +45,15 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         updateRightBarButtonState()
         
         // dismiss keyboard when focus leaves text field
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(DukePersonTableViewController.hideKeyboard))
-        tapGesture.cancelsTouchesInView = true
-        tableView.addGestureRecognizer(tapGesture)
+        let dismissKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(DukePersonTableViewController.hideKeyboard))
+        dismissKeyboardGesture.cancelsTouchesInView = true
+        tableView.addGestureRecognizer(dismissKeyboardGesture)
         
+        let addImageGesture = UITapGestureRecognizer(target: self, action: #selector(DukePersonTableViewController.imageTapped))
+        profilePicture.isUserInteractionEnabled = true
+        profilePicture.addGestureRecognizer(addImageGesture)
+        
+        profilePicturePicker.delegate = self
         genderPickerView.delegate = self
         degreePickerView.delegate = self
         rolePickerView.delegate = self
@@ -64,6 +72,10 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
             self.navigationItem.rightBarButtonItem?.title = "Edit"
             rightBarButton.isEnabled = true
             
+            if let pic = dukePerson.getProfilePicture() {
+                profilePicture.image = pic
+            }
+            
             textFields[0].text = dukePerson.getFirstName()
             textFields[1].text = dukePerson.getLastName()
             textFields[2].text = dukePerson.getGender()
@@ -81,6 +93,16 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
             textFields[11].text = dukePerson.getHobby(index: 0)
             textFields[12].text = dukePerson.getHobby(index: 1)
             textFields[13].text = dukePerson.getHobby(index: 2)
+            
+            textFields[14].text = dukePerson.getEmployer()
+            
+            if dukePerson.getYearsExperience() != nil {
+                textFields[15].text = String(describing: dukePerson.getYearsExperience()!)
+            }
+            
+            if dukePerson.getGPA() != nil {
+                textFields[16].text = String(describing: dukePerson.getGPA()!)
+            }
             
             setTextFieldsEditable(editable: false)
         }
@@ -111,18 +133,15 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
             return
         }
         
-        //        let photo = profilePicImageView.image
-      
         // creating a new DukePerson
-        let newDukePerson = DukePerson()
-        newDukePerson.setFirstName(firstName: textFields[0].text ?? "")
-        newDukePerson.setLastName(lastName: textFields[1].text ?? "")
-        newDukePerson.setGender(gender: textFields[2].text ?? "")
-        newDukePerson.setWhereFrom(whereFrom: textFields[3].text ?? "")
-        newDukePerson.setSchool(school: textFields[4].text ?? "")
+        let newDukePerson = DukePerson(firstName: textFields[0].text!, lastName: textFields[1].text!, gender: textFields[2].text!, whereFrom: textFields[3].text!, school: textFields[4].text!, role: textFields[6].text!)
+        newDukePerson.setProfilePicture(picture: profilePicture.image)
         newDukePerson.setDegree(degree: textFields[5].text ?? "")
-        newDukePerson.setRole(role: textFields[6].text ?? "")
+        newDukePerson.setGPA(gpa: Double(textFields[16].text!))
         newDukePerson.setTeam(team: textFields[7].text ?? "")
+        newDukePerson.setEmployer(employer: textFields[14].text ?? "")
+        newDukePerson.setYearsExperience(years: Int(textFields[15].text!))
+        
         newDukePerson.addLanguages(languages: [textFields[8].text ?? "", textFields[9].text ?? "", textFields[10].text ?? ""])
         newDukePerson.addHobbies(hobbies: [textFields[11].text ?? "", textFields[12].text ?? "", textFields[13].text ?? ""])
         if let animationController = dukePerson?.getAnimationController() {
@@ -131,6 +150,7 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         
         dukePerson = newDukePerson
     }
+    
     
     // MARK: Actions
     
@@ -148,7 +168,25 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
             fatalError("The DukePersonTableViewController is not inside a navigation controller")
         }
     }
-
+    
+    // MARK: - UIImagePickerControllerDelegate Methods
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            profilePicture.contentMode = .scaleAspectFit
+            profilePicture.image = pickedImage
+            dukePerson?.setProfilePicture(picture: pickedImage)
+            if rightBarButton.title == "Edit" {
+                performSegue(withIdentifier: "saveProfilePicture", sender: rightBarButton)
+            }
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     // MARK: UIPickerViewDelegate / UIPickerViewDataSource functions
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -194,7 +232,7 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         }
     }
     
-
+    
     //MARK: UITextFieldDelegate functions
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -257,7 +295,7 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         let school = textFields[4].text ?? ""
         let role = textFields[6].text ?? ""
         let team = textFields[7].text ?? ""
-
+        
         var teamValid = true
         if team != "" {
             teamValid = (role == "Student")
@@ -270,6 +308,13 @@ class DukePersonTableViewController: UITableViewController, UITextFieldDelegate,
         for textField in textFields {
             textField.isUserInteractionEnabled = editable
         }
+    }
+    
+    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        //        let tappedImage = tapGestureRecognizer.view as! UIImageView
+        profilePicturePicker.allowsEditing = false
+        profilePicturePicker.sourceType = .camera
+        present(profilePicturePicker, animated: true, completion: nil)
     }
     
 }

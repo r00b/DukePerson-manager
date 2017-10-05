@@ -13,7 +13,7 @@ class DukePersonPageViewController: UIPageViewController {
     var pages : [UIViewController] = [UIViewController]()
     
     var dukePerson: DukePerson?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
